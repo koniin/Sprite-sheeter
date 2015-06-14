@@ -1,56 +1,77 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
+﻿using System;
 using System.IO;
-using System.Linq;
 
 namespace SpriteSheetPacker {
-    class Program {
+    class Program{
+        private static string _status;
         static void Main(string[] args){
-            //CombineAllFromSubFolders(@"C:\temp\Sprites\player");
-            //CombineAllInFolder(@"C:\temp\Sprites\Platformer", @"C:\temp\Sprites\");
-            //SplitSheet(@"C:\temp\Sprites\items\items32.png");
+            ConsoleKeyInfo cki;
+
+            do {
+                Console.Clear();
+                Console.WriteLine(_status);
+                DisplayMenu();
+                cki = Console.ReadKey(false);
+                switch (cki.KeyChar) {
+                    case '1':
+                        CombineFromSubFolders();
+                        break;
+                    case '2':
+                        CombineAllInFolder();
+                        break;
+                    case '3':
+                        SplitSheet();
+                        break;
+                    case '4':
+                        MergeToSheet();
+                        break;
+                }
+            } while (cki.Key != ConsoleKey.Escape && cki.Key != ConsoleKey.Q);
+            //Combiner.CombineAllFromSubFolders(@"C:\temp\Sprites\player");
+            //Combiner.CombineAllInFolder(@"C:\temp\Sprites\Platformer", @"C:\temp\Sprites\");
+            //Combiner.SplitSheet(@"C:\temp\Sprites\items\items32.png");
         }
 
-        private static void CombineAllFromSubFolders(string folder) {
-            var sprites = Directory.GetDirectories(folder).Select(GetSpriteSheet).ToList();
-            Bitmap sheet = ImageCombinator.CombineHorizontal(sprites.ToArray());
-            var fileName = new DirectoryInfo(folder).Name + ".png";
-            sheet.Save(Path.Combine(folder, fileName), ImageFormat.Png);
+        private static void DisplayMenu() {
+            Console.WriteLine();
+            Console.WriteLine("Sprite sheet packer");
+            Console.WriteLine("-------------------------");
+            Console.WriteLine("Options:");
+            Console.WriteLine("1. Combine all images in all subfolders of entered path");
+            Console.WriteLine("2. Combine all images in ONE folder to spritesheet");
+            Console.WriteLine("3. Split an image into all its 32x32 components");
+            Console.WriteLine("4. Combine all images in sub folders and then combine that into a sheet");
+            Console.WriteLine("\nPress Escape or q to exit\n");
+            Console.Write("Enter option: ");
         }
 
-        private static Bitmap GetSpriteSheet(string folder){
-            var dir = new DirectoryInfo(folder);
-            var files = Directory.GetFiles(folder);
-            return ImageCombinator.CombineHorizontal(files);
+        private static void CombineFromSubFolders(){
+            Console.Write("\n Enter path: ");
+            string path = Console.ReadLine();
+            _status = "Created new sheet @ " + Combiner.CombineAllFromSubFolders(path);
         }
 
-        private static void SplitSheet(string inFile){
-            var spriteList = ImageSplitter.Split(inFile, 32);
+        private static void CombineAllInFolder() {
+            Console.Write("\n Enter input path: ");
+            string inputpath = Console.ReadLine();
+            Console.Write("\n Enter output path: ");
+            string outputpath = Console.ReadLine();
+            _status = "Created new sheet @ " + Combiner.CombineAllInFolder(inputpath, outputpath);
+        }
 
-            var fileInfo = new FileInfo(inFile);
-            var sprites = spriteList as Bitmap[] ?? spriteList.ToArray();
-            var newPath = Path.Combine(fileInfo.DirectoryName, Path.GetFileNameWithoutExtension(inFile));
-            if (Directory.Exists(newPath))
-                Directory.Delete(newPath, true);
+        private static void SplitSheet() {
+            Console.Write("\n Enter input image path: ");
+            string inputpath = Console.ReadLine();
+            _status = "Created new folder with images in " + Combiner.SplitSheet(inputpath);
+        }
 
-            Directory.CreateDirectory(newPath);
-
-            for (int i = 0; i < sprites.Count(); i++){
-                string filename = GetFileName(i, fileInfo.Extension);
-                sprites[i].Save(Path.Combine(newPath, filename));
+        private static void MergeToSheet() {
+            Console.Write("\n Enter path: ");
+            string path = Console.ReadLine();
+            foreach (var directory in Directory.GetDirectories(path)){
+                Combiner.CombineAllFromSubFolders(directory);
             }
-        }
-
-        private static string GetFileName(int i, string extension){
-            return (i + extension).PadLeft(7, '0');
-        }
-
-        private static void CombineAllInFolder(string folder, string outfolder) {
-            var dir = new DirectoryInfo(folder);
-            var files = Directory.GetFiles(folder).ToList();
-            files.Sort();
-            var image = ImageCombinator.CombineHorizontal(files.ToArray());
-            image.Save(Path.Combine(outfolder, dir.Name + ".png"), ImageFormat.Png);
+            _status = "Created new sheet @ " + Combiner.CombineAllFromSubFoldersVertical(path);
         }
     }
 }
