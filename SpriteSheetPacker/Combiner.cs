@@ -54,9 +54,12 @@ namespace SpriteSheetPacker{
             var dir = new DirectoryInfo(folder);
             var files = Directory.GetFiles(folder).ToList();
             files.Sort();
+            ImageCombinator.Exporter = new PList();
             var image = ImageCombinator.CombineHorizontal(files.ToArray());
             string filename = Path.Combine(outfolder, dir.Name + ".png");
             image.Save(filename, ImageFormat.Png);
+            ImageCombinator.Exporter.End(dir.Name + ".png", image.Width, image.Height);
+            File.WriteAllText(Path.Combine(outfolder, dir.Name + ".plist"), ImageCombinator.Exporter.ToString());
             return filename;
         }
     }

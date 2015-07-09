@@ -1,0 +1,6 @@
+C:\Code\Sprite-sheeter\SpriteSheetPacker\bin\Debug\SpriteSheetPacker.exe.config
+C:\Code\Sprite-sheeter\SpriteSheetPacker\bin\Debug\SpriteSheetPacker.exe
+C:\Code\Sprite-sheeter\SpriteSheetPacker\bin\Debug\SpriteSheetPacker.pdb
+C:\Code\Sprite-sheeter\SpriteSheetPacker\obj\Debug\SpriteSheetPacker.csprojResolveAssemblyReference.cache
+C:\Code\Sprite-sheeter\SpriteSheetPacker\obj\Debug\SpriteSheetPacker.exe
+C:\Code\Sprite-sheeter\SpriteSheetPacker\obj\Debug\SpriteSheetPacker.pdb

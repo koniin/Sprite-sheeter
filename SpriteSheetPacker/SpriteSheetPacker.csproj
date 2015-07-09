@@ -45,6 +45,8 @@
     <Compile Include="Combiner.cs" />
     <Compile Include="ImageCombinator.cs" />
     <Compile Include="ImageSplitter.cs" />
+    <Compile Include="ISpriteSheetExport.cs" />
+    <Compile Include="PList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -27,6 +27,8 @@ namespace SpriteSheetPacker {
                         break;
                 }
             } while (cki.Key != ConsoleKey.Escape && cki.Key != ConsoleKey.Q);
+
+
             //Combiner.CombineAllFromSubFolders(@"C:\temp\Sprites\player");
             //Combiner.CombineAllInFolder(@"C:\temp\Sprites\Platformer", @"C:\temp\Sprites\");
             //Combiner.SplitSheet(@"C:\temp\Sprites\items\items32.png");
