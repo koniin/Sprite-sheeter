@@ -18,9 +18,10 @@ namespace SpriteSheetPacker {
         public static Bitmap CombineHorizontal(Bitmap[] files) {
             return CombineImages(files, UpdateHorizontalDimensions, DrawHorizontal);
         }
-
-        private static Bitmap CombineImages(Bitmap[] files, UpdateImageDimensions funcUpdateImageDimensions, DrawOffset drawOffset) {
+        
+        private static Bitmap CombineImages(Bitmap[] images, UpdateImageDimensions funcUpdateImageDimensions, DrawOffset drawOffset) {
             Bitmap finalImage = null;
+            var files = images.OrderByDescending(i => i.Width*i.Height);
             try{
                 var width = 0;
                 var height = 0;
