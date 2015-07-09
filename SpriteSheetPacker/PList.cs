@@ -27,22 +27,6 @@ namespace SpriteSheetPacker {
             _plist.AppendLine("				<key>sourceSize</key>");
             _plist.AppendLine("				<string>{{" + width + "," + height + "}}</string>");
             _plist.AppendLine("			<dict>");
-
-            /*
-            <key>barHorizontal_blue_left.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{104,440},{6,26}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{6,26}}</string>
-                <key>sourceSize</key>
-                <string>{6,26}</string>
-            </dict>
-            */
         }
 
         public void End(string fileName, int width, int height) {
