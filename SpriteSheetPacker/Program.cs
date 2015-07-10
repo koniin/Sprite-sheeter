@@ -9,7 +9,7 @@ namespace SpriteSheetPacker {
         private static SpriteSheetPack.SpriteSheetPacker _spriteSheetManager;
 
         static void Main(string[] args){
-            _spriteSheetManager = new SpriteSheetPack.SpriteSheetPacker(new FrameListToSpriteSheetCombiner());
+            _spriteSheetManager = new SpriteSheetPack.SpriteSheetPacker(new VerticalFrameListCombiner());
 
             ConsoleKeyInfo cki;
             do {

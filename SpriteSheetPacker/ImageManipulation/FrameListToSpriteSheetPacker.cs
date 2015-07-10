@@ -3,7 +3,7 @@ using System.Drawing;
 using SpriteSheetPacker.SpriteSheetPack;
 
 namespace SpriteSheetPacker.ImageManipulation {
-    public class FrameListToSpriteSheetCombiner : IFrameListCombiner {
+    public class VerticalFrameListCombiner : IFrameListCombiner {
         public SpriteSheet Combine(FrameList frameList) {
             Bitmap finalImage = null;
             try {
