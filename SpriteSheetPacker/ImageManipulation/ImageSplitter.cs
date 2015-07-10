@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace SpriteSheetPacker {
+namespace SpriteSheetPacker.ImageManipulation {
     public class ImageSplitter {
-        public static IEnumerable<Bitmap> Split(string file, int spriteSize){
+        public IEnumerable<Bitmap> Split(string file, int spriteSize){
             var bitmap = new Bitmap(file);
 
             var sprites = new List<Bitmap>();

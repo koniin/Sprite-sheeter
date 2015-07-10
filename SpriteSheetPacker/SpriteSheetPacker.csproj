@@ -42,15 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Combiner.cs" />
-    <Compile Include="ImageCombinator.cs" />
-    <Compile Include="ImageSplitter.cs" />
-    <Compile Include="ISpriteSheetExport.cs" />
-    <Compile Include="PList.cs" />
+    <Compile Include="ImageManipulation\ImageSplitter.cs" />
+    <Compile Include="MappingFileFormats\IMappingFile.cs" />
+    <Compile Include="MappingFileFormats\PList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SecondVersion\Frame.cs" />
-    <Compile Include="SecondVersion\SpriteSheet.cs" />
+    <Compile Include="SpriteSheetPack\Frame.cs" />
+    <Compile Include="ImageManipulation\IFrameListCombiner.cs" />
+    <Compile Include="SpriteSheetPack\ImageWriter.cs" />
+    <Compile Include="SpriteSheetPack\FrameList.cs" />
+    <Compile Include="SpriteSheetPack\FrameListLoader.cs" />
+    <Compile Include="ImageManipulation\FrameListToSpriteSheetPacker.cs" />
+    <Compile Include="SpriteSheetPack\MappingFileWriter.cs" />
+    <Compile Include="SpriteSheetPack\SpriteSheet.cs" />
+    <Compile Include="SpriteSheetPack\SpriteSheetPacker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

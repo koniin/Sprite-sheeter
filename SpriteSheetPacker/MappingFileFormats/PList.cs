@@ -1,8 +1,12 @@
 ﻿using System.Text;
+using SpriteSheetPacker.SpriteSheetPack;
 
-namespace SpriteSheetPacker {
-    public class PList : ISpriteSheetExport {
+namespace SpriteSheetPacker.MappingFileFormats {
+    public class PList : IMappingFile {
         private StringBuilder _plist;
+
+        public string Extension { get { return ".plist"; } }
+
         public void Start() {
             _plist = new StringBuilder();
             _plist.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -37,6 +41,12 @@ namespace SpriteSheetPacker {
             _plist.AppendLine("		</dict>");
             _plist.AppendLine("	</dict>");
             _plist.AppendLine("</plist>");
+        }
+
+        public void AddFrames(FrameList frameList) {
+            foreach (var frame in frameList.Frames) {
+                AddFrame(frame.FileName, frame.PositionInSheetX, frame.PositionInSheetY, frame.Width, frame.Height);
+            }
         }
 
         public override string ToString() {
