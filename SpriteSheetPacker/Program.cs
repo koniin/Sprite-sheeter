@@ -8,10 +8,8 @@ namespace SpriteSheetPacker {
         private static SpriteSheetPack.SpriteSheetPacker _spriteSheetManager;
 
         static void Main(string[] args){
-            //_spriteSheetManager = new SpriteSheetPack.SpriteSheetPacker(new VerticalFrameListCombiner());
             _spriteSheetManager = new SpriteSheetPack.SpriteSheetPacker(new SquareFrameListCombiner());
             
-
             ConsoleKeyInfo cki;
             do {
                 Console.Clear();
