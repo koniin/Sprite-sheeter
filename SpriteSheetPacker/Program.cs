@@ -1,7 +1,6 @@
 ﻿using System;
 using SpriteSheetPacker.ImageManipulation;
 using SpriteSheetPacker.MappingFileFormats;
-using SpriteSheetPacker.SpriteSheetPack;
 
 namespace SpriteSheetPacker {
     class Program{
@@ -9,7 +8,9 @@ namespace SpriteSheetPacker {
         private static SpriteSheetPack.SpriteSheetPacker _spriteSheetManager;
 
         static void Main(string[] args){
-            _spriteSheetManager = new SpriteSheetPack.SpriteSheetPacker(new VerticalFrameListCombiner());
+            //_spriteSheetManager = new SpriteSheetPack.SpriteSheetPacker(new VerticalFrameListCombiner());
+            _spriteSheetManager = new SpriteSheetPack.SpriteSheetPacker(new SquareFrameListCombiner());
+            
 
             ConsoleKeyInfo cki;
             do {

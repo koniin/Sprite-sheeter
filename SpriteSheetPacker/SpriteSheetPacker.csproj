@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImageManipulation\ImageSplitter.cs" />
+    <Compile Include="ImageManipulation\Node.cs" />
+    <Compile Include="ImageManipulation\SquareFrameListCombiner.cs" />
     <Compile Include="MappingFileFormats\IMappingFile.cs" />
     <Compile Include="MappingFileFormats\PList.cs" />
     <Compile Include="Program.cs" />
@@ -52,7 +54,7 @@
     <Compile Include="SpriteSheetPack\ImageWriter.cs" />
     <Compile Include="SpriteSheetPack\FrameList.cs" />
     <Compile Include="SpriteSheetPack\FrameListLoader.cs" />
-    <Compile Include="ImageManipulation\FrameListToSpriteSheetPacker.cs" />
+    <Compile Include="ImageManipulation\VerticalFrameListCombiner.cs" />
     <Compile Include="SpriteSheetPack\MappingFileWriter.cs" />
     <Compile Include="SpriteSheetPack\SpriteSheet.cs" />
     <Compile Include="SpriteSheetPack\SpriteSheetPacker.cs" />
