@@ -5,10 +5,10 @@ using SpriteSheetPacker.MappingFileFormats;
 namespace SpriteSheetPacker {
     class Program{
         private static string _status;
-        private static SpriteSheetPack.SpriteSheetPacker _spriteSheetManager;
+        private static SpriteSheetPack.SpriteSheetPacker _spriteSheetPacker;
 
         static void Main(string[] args){
-            _spriteSheetManager = new SpriteSheetPack.SpriteSheetPacker(new SquareFrameListCombiner());
+            _spriteSheetPacker = new SpriteSheetPack.SpriteSheetPacker(new SquareFrameListCombiner());
             
             ConsoleKeyInfo cki;
             do {
@@ -47,21 +47,21 @@ namespace SpriteSheetPacker {
             var inputpath = Console.ReadLine();
             Console.Write("\n Enter output path: ");
             var outputpath = Console.ReadLine();
-            _spriteSheetManager.PackImagesInFolder(inputpath, outputpath, new PList());
+            _spriteSheetPacker.PackImagesInFolder(inputpath, outputpath, new PList());
             _status = "Created new sheet in " + outputpath;
         }
 
         private static void CombineFromSubFolders(){
             Console.Write("\n Enter path: ");
             var path = Console.ReadLine();
-            _spriteSheetManager.PackImagesFromSubfolders(path, new PList());
+            _spriteSheetPacker.PackImagesFromSubfolders(path, new PList());
             _status = "Created new sheet @ " + path;
         }
 
         private static void SplitSheet() {
             Console.Write("\n Enter input image path: ");
             var inputpath = Console.ReadLine();
-            var newPath = _spriteSheetManager.SplitImage(inputpath, 32);
+            var newPath = _spriteSheetPacker.SplitImage(inputpath, 32);
             _status = "Created new folder with images in " + newPath;
         }
     }
