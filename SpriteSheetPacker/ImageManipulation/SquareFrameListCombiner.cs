@@ -1,33 +1,38 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
 using SpriteSheetPacker.SpriteSheetPack;
 
 namespace SpriteSheetPacker.ImageManipulation {
-    public class SquareFrameListCombiner : IFrameListCombiner {
-        public SpriteSheet Combine(FrameList frameList){
-            Bitmap finalImage = null;
+    public class SquareFrameListCombiner : IFrameListCombiner{
+        private Node _root;
 
+        public SpriteSheet Combine(FrameList frameList){
             // http://codeincomplete.com/posts/2011/5/7/bin_packing/
             // http://jwezorek.com/2013/01/sprite-packing-in-python/
             // http://www.blackpawn.com/texts/lightmaps/default.html
 
             var sortedList = frameList.Frames.OrderByDescending(f => f.Height*f.Width);
 
-            Node root = new Node() { Width = 1024, Height = 1024 };
+            _root = new Node() { Width = sortedList.First().Width, Height = sortedList.First().Height };
 
-            Node node;
             foreach (var frame in sortedList){
-                node = FindNode(root, frame.Width, frame.Height);
+                var node = FindNode(_root, frame.Width, frame.Height);
                 if (node != null){
                     var fit = SplitNode(node, frame.Width, frame.Height);
                     frame.PositionInSheetX = fit.X;
                     frame.PositionInSheetY = fit.Y;
                 }
+                else{
+                    var fit = GrowNode(frame.Width, frame.Height);
+                    frame.PositionInSheetX = fit.X;
+                    frame.PositionInSheetY = fit.Y;
+                }
             }
 
-            finalImage = new Bitmap(root.Width, root.Height);
+            var finalImage = new Bitmap(_root.Width, _root.Height);
 
-            using (Graphics g = Graphics.FromImage(finalImage)) {
+            using (var g = Graphics.FromImage(finalImage)) {
                 //set background color
                 g.Clear(Color.Transparent);
 
@@ -39,14 +44,13 @@ namespace SpriteSheetPacker.ImageManipulation {
             return new SpriteSheet(frameList, finalImage, frameList.Name);
         }
 
-        private Node FindNode(Node root, int width, int height) {
+        private Node FindNode(Node root, int width, int height){
             if (root.Used){
                 return FindNode(root.Right, width, height) ?? FindNode(root.Down, width, height);
             }
-            else if ((width <= root.Width) && (height <= root.Height))
+            if ((width <= root.Width) && (height <= root.Height))
                 return root;
-            else
-                return null;
+            return null;
         }
 
         private Node SplitNode(Node node, int width, int height){
@@ -54,6 +58,47 @@ namespace SpriteSheetPacker.ImageManipulation {
             node.Down = new Node() { X = node.X, Y = node.Y + height, Width = node.Width, Height = node.Height - height };
             node.Right = new Node() { X = node.X + width, Y = node.Y, Width = node.Width - width, Height = height };
             return node;
+        }
+
+        private Node GrowNode(int width, int height) {
+            var canGrowDown = (width <= _root.Width);
+            var canGrowRight = (height <= _root.Height);
+
+            var shouldGrowRight = canGrowRight && (_root.Height >= (_root.Width + width)); // attempt to keep square-ish by growing right when height is much greater than width
+            var shouldGrowDown = canGrowDown && (_root.Width >= (_root.Height + height)); // attempt to keep square-ish by growing down  when width  is much greater than height
+
+            if (shouldGrowRight)
+                return GrowRight(width, height);
+            if (shouldGrowDown)
+                return GrowDown(width, height);
+            if (canGrowRight)
+                return GrowRight(width, height);
+            if (canGrowDown)
+                return GrowDown(width, height);
+
+            throw new Exception("wrong wrong wrong");
+            return null; // need to ensure sensible root starting size to avoid this happening
+        }
+
+        private Node GrowDown(int width, int height){
+            _root = new Node() { Used = true, X = 0, Y = 0, Width =  _root.Width, Height = _root.Height + height, 
+                Down = new Node() { X = 0, Y = _root.Height, Width = _root.Width, Height = height },
+                Right = new Node() { Down = _root.Down, Height = _root.Height, Right = _root.Right, Used = _root.Used, Width = _root.Width, X = _root.X, Y = _root.Y }
+            };
+
+            var node = FindNode(_root, width, height);
+            return node != null ? SplitNode(node, width, height) : null;
+        }
+
+        private Node GrowRight(int width, int height){
+            _root = new Node() {
+                Used = true, X = 0, Y = 0, Width = _root.Width + width, Height = _root.Height,
+                Down = new Node() { Down = _root.Down, Height = _root.Height, Right = _root.Right, Used = _root.Used, Width = _root.Width, X = _root.X, Y = _root.Y },
+                Right = new Node() { X = _root.Width, Y = 0, Width = width, Height = _root.Height }
+            };
+
+            var node = FindNode(_root, width, height);
+            return node != null ? SplitNode(node, width, height) : null;
         }
     }
 }

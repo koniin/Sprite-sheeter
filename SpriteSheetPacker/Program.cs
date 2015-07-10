@@ -46,24 +46,24 @@ namespace SpriteSheetPacker {
 
         private static void CombineAllInFolder() {
             Console.Write("\n Enter input path: ");
-            string inputpath = Console.ReadLine();
+            var inputpath = Console.ReadLine();
             Console.Write("\n Enter output path: ");
-            string outputpath = Console.ReadLine();
+            var outputpath = Console.ReadLine();
             _spriteSheetManager.PackImagesInFolder(inputpath, outputpath, new PList());
             _status = "Created new sheet in " + outputpath;
         }
 
         private static void CombineFromSubFolders(){
             Console.Write("\n Enter path: ");
-            string path = Console.ReadLine();
+            var path = Console.ReadLine();
             _spriteSheetManager.PackImagesFromSubfolders(path, new PList());
             _status = "Created new sheet @ " + path;
         }
 
         private static void SplitSheet() {
             Console.Write("\n Enter input image path: ");
-            string inputpath = Console.ReadLine();
-            string newPath = _spriteSheetManager.SplitImage(inputpath, 32);
+            var inputpath = Console.ReadLine();
+            var newPath = _spriteSheetManager.SplitImage(inputpath, 32);
             _status = "Created new folder with images in " + newPath;
         }
     }

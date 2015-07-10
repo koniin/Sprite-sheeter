@@ -4,10 +4,10 @@ using System.Linq;
 namespace SpriteSheetPacker.SpriteSheetPack {
     public class FrameListLoader {
         public FrameList Load(string folder) {
-            var files = Directory.GetFiles(folder).ToList();
+            var files = Directory.GetFiles(folder).Where(file => file.EndsWith(".png")).ToList();
             files.Sort();
 
-            FrameList frameList = new FrameList();
+            var frameList = new FrameList();
             foreach (var file in files) {
                 frameList.AddFrame(file);
             }

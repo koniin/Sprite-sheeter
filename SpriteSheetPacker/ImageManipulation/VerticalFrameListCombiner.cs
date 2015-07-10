@@ -18,12 +18,13 @@ namespace SpriteSheetPacker.ImageManipulation {
 
                 finalImage = new Bitmap(width, height);
 
-                using (Graphics g = Graphics.FromImage(finalImage)) {
+                using (var g = Graphics.FromImage(finalImage)) {
                     //set background color
                     g.Clear(Color.Transparent);
 
                     //go through each image and draw it on the final image
-                    int offsetX = 0, offsetY = 0;
+                    var offsetX = 0;
+                    const int offsetY = 0;
                     foreach (var frame in frameList.Frames) {
                         frame.PositionInSheetX = offsetX;
                         frame.PositionInSheetY = offsetY;
@@ -35,11 +36,6 @@ namespace SpriteSheetPacker.ImageManipulation {
                 if (finalImage != null)
                     finalImage.Dispose();
                 throw;
-            } finally {
-                ////clean up memory
-                //foreach (var image in frameList.Frames) {
-                //    image.Bitmap.Dispose();
-                //}
             }
 
             return new SpriteSheet(frameList, finalImage, frameList.Name);

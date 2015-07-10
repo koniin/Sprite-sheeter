@@ -6,36 +6,36 @@ using SpriteSheetPacker.MappingFileFormats;
 
 namespace SpriteSheetPacker.SpriteSheetPack {
     public class SpriteSheetPacker {
-        private static FrameListLoader loader;
-        private static IFrameListCombiner combiner;
-        private static ImageWriter writer;
-        private static MappingFileWriter mappingWriter;
-        private static ImageSplitter imageSplitter;
+        private readonly FrameListLoader _loader;
+        private readonly IFrameListCombiner _combiner;
+        private readonly ImageWriter _writer;
+        private readonly MappingFileWriter _mappingWriter;
+        private readonly ImageSplitter _imageSplitter;
 
         public SpriteSheetPacker(IFrameListCombiner frameListCombiner) {
-            combiner = frameListCombiner;
-            loader = new FrameListLoader();
-            writer = new ImageWriter();
-            mappingWriter = new MappingFileWriter();
-            imageSplitter = new ImageSplitter();
+            _combiner = frameListCombiner;
+            _loader = new FrameListLoader();
+            _writer = new ImageWriter();
+            _mappingWriter = new MappingFileWriter();
+            _imageSplitter = new ImageSplitter();
         }
 
         public void PackImagesInFolder(string inputpath, string outputpath, IMappingFile mappingFile) {
-            var frameList = loader.Load(inputpath);
-            var spriteSheet = combiner.Combine(frameList);
-            writer.Write(outputpath, spriteSheet);
-            mappingWriter.Write(outputpath, spriteSheet, mappingFile);
+            var frameList = _loader.Load(inputpath);
+            var spriteSheet = _combiner.Combine(frameList);
+            _writer.Write(outputpath, spriteSheet);
+            _mappingWriter.Write(outputpath, spriteSheet, mappingFile);
         }
 
         public void PackImagesFromSubfolders(string path, IMappingFile mappingFile) {
-            var frameListsFromFolders = Directory.GetDirectories(path).SelectMany(d => loader.Load(d).Frames);
-            var spriteSheet = combiner.Combine(new FrameList() { Frames = frameListsFromFolders.ToList(), Name = new DirectoryInfo(path).Name });
-            writer.Write(path, spriteSheet);
-            mappingWriter.Write(path, spriteSheet, mappingFile);
+            var frameListsFromFolders = Directory.GetDirectories(path).SelectMany(d => _loader.Load(d).Frames);
+            var spriteSheet = _combiner.Combine(new FrameList() { Frames = frameListsFromFolders.ToList(), Name = new DirectoryInfo(path).Name });
+            _writer.Write(path, spriteSheet);
+            _mappingWriter.Write(path, spriteSheet, mappingFile);
         }
 
         public string SplitImage(string inputpath, int spriteSize) {
-            var spriteList = imageSplitter.Split(inputpath, spriteSize);
+            var spriteList = _imageSplitter.Split(inputpath, spriteSize);
 
             var fileInfo = new FileInfo(inputpath);
             var sprites = spriteList as Bitmap[] ?? spriteList.ToArray();
