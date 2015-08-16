@@ -37,7 +37,7 @@ namespace SpriteSheetPacker {
             Console.WriteLine("Options:");
             Console.WriteLine("1. Combine all images in ONE folder to spritesheet");
             Console.WriteLine("2. Combine all images in all subfolders of entered path");
-            Console.WriteLine("3. Split an image into all its 32x32 components");
+            Console.WriteLine("3. Split an image into all its [X x X] components (e.g. 32x32)");
             Console.WriteLine("\nPress Escape or q to exit\n");
             Console.Write("Enter option: ");
         }
@@ -59,9 +59,11 @@ namespace SpriteSheetPacker {
         }
 
         private static void SplitSheet() {
+            Console.Write("\n Enter size: ");
+            var size = Console.ReadLine();
             Console.Write("\n Enter input image path: ");
             var inputpath = Console.ReadLine();
-            var newPath = _spriteSheetPacker.SplitImage(inputpath, 32);
+            var newPath = _spriteSheetPacker.SplitImage(inputpath, int.Parse(size));
             _status = "Created new folder with images in " + newPath;
         }
     }
