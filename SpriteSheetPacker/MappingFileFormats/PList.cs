@@ -30,7 +30,7 @@ namespace SpriteSheetPacker.MappingFileFormats {
             _plist.AppendLine("				<string>{{0,0},{" + width + "," + height + "}}</string>");
             _plist.AppendLine("				<key>sourceSize</key>");
             _plist.AppendLine("				<string>{{" + width + "," + height + "}}</string>");
-            _plist.AppendLine("			<dict>");
+            _plist.AppendLine("			</dict>");
         }
 
         public void End(string fileName, int width, int height) {
