@@ -60,10 +60,22 @@ namespace SpriteSheetPacker {
 
         private static void SplitSheet() {
             Console.Write("\n Enter size: ");
-            var size = Console.ReadLine();
+            int size;
+            string requestedSize = Console.ReadLine();
+            while (!int.TryParse(requestedSize, out size) || size <= 0)
+            {
+                Console.Write("\n Enter size (number greater than 0): ");
+                requestedSize = Console.ReadLine();
+            }
+
             Console.Write("\n Enter input image path: ");
             var inputpath = Console.ReadLine();
-            var newPath = _spriteSheetPacker.SplitImage(inputpath, int.Parse(size));
+            while (!System.IO.File.Exists(inputpath))
+            {
+                Console.Write("\n Enter input image path: ");
+                inputpath = Console.ReadLine();
+            }
+            var newPath = _spriteSheetPacker.SplitImage(inputpath, size);
             _status = "Created new folder with images in " + newPath;
         }
     }
