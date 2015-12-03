@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
@@ -45,6 +46,8 @@
     <Compile Include="ImageManipulation\ImageSplitter.cs" />
     <Compile Include="ImageManipulation\Node.cs" />
     <Compile Include="ImageManipulation\SquareFrameListCombiner.cs" />
+    <Compile Include="MappingFileFormats\ExportFileTypeFactory.cs" />
+    <Compile Include="MappingFileFormats\FileTypes.cs" />
     <Compile Include="MappingFileFormats\IMappingFile.cs" />
     <Compile Include="MappingFileFormats\PList.cs" />
     <Compile Include="Program.cs" />
@@ -58,6 +61,7 @@
     <Compile Include="SpriteSheetPack\MappingFileWriter.cs" />
     <Compile Include="SpriteSheetPack\SpriteSheet.cs" />
     <Compile Include="SpriteSheetPack\SpriteSheetPacker.cs" />
+    <Compile Include="UserSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
