@@ -51,7 +51,7 @@ Json example:
     "frameCount":2, 
     "frames": [
         { "name": "bullet_1.png", "id": 0, "x":0, "y":0, "width":16, "height":16 },
-        { "name": "bullet_2.png", "id": 1, "x":16, "y":0, "width":16, "height":16 },
+        { "name": "bullet_2.png", "id": 1, "x":16, "y":0, "width":16, "height":16 }
     ]
 }
 ```
@@ -66,7 +66,7 @@ sprites.png
 ```
 
 Plist example:  
-too long to list...
+* too long to list but it works with Cocos2d-x
 
 # Extend  
 
