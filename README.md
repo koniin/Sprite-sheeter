@@ -17,7 +17,7 @@ There are four different commands in this mode:
     * Prompts for a folder and reads all sub directories of that folder and combines everything from those sub folders and writes output to the directory specified.
 3. Split an image into all its [X by Y] components (e.g. 32x32)
     * Splits an image in even squares. Prompts for a size (once, e.g. 32) and then for an input file. It will write where the output folder is located.
-4. Set default export filetype (e.g. json, plist)
+4. Set default export filetype
     * This can be used to change the type of output you want. Default is my own format I use but PList and simple JSON is also available.
   
 There is also the possibility run it with arguments.  
@@ -28,7 +28,7 @@ SpriteSheetPacker.exe C:\temp\folder_with_sprites C:\temp\output_folder EngineFo
 ```
 
 ```
-SpriteSheetPacker.exe C:\temp\some_config_file.[something]
+SpriteSheetPacker.exe C:\temp\some_config_file[extension]
 ```
 
 Example file:  
@@ -37,6 +37,36 @@ C:\temp\some_folder_with_sprites\
 C:\temp\folder_to_put_sprite_sheet_and_data_file\  
 EngineFormat
 ```
+
+# Available export formats  
+
+*  Json
+*  Plist
+*  EngineFormat
+
+Json example:  
+```
+{
+    "image":"sprites.png", 
+    "frameCount":2, 
+    "frames": [
+        { "name": "bullet_1.png", "id": 0, "x":0, "y":0, "width":16, "height":16 },
+        { "name": "bullet_2.png", "id": 1, "x":16, "y":0, "width":16, "height":16 },
+    ]
+}
+```
+  
+EngineFormat example:  
+```
+sprites.png
+2
+0 bullet_1.png 0 0 16 16 
+1 bullet_2.png 16 0 16 16 
+
+```
+
+Plist example:  
+too long to list...
 
 # Extend  
 
