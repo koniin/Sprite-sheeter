@@ -5,7 +5,7 @@ namespace SpriteSheetPacker.MappingFileFormats {
         public IMappingFile Create(FileType fileType) {
             switch (fileType) {
                 case FileType.Json:
-                    throw new NotImplementedException("Json filetype is not implemented");
+                    return new SimpleJSON();
                 case FileType.Plist:
                     return new PList();
                 case FileType.EngineFormat:

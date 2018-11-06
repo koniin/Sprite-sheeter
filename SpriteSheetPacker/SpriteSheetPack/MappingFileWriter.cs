@@ -3,10 +3,11 @@ using SpriteSheetPacker.MappingFileFormats;
 
 namespace SpriteSheetPacker.SpriteSheetPack {
     public class MappingFileWriter {
+        const string SpriteSheetImageExtension = ".png";
+
         public void Write(string filePath, SpriteSheet spriteSheet, IMappingFile mappingFile) {
-            mappingFile.Start();
-            mappingFile.AddFrames(spriteSheet.FrameList);
-            mappingFile.End(spriteSheet.Name + ".png", spriteSheet.Image.Width, spriteSheet.Image.Height);
+            var imageFileName = spriteSheet.Name + SpriteSheetImageExtension;
+            mappingFile.Format(imageFileName, spriteSheet);
             File.WriteAllText(Path.Combine(filePath, spriteSheet.Name) + mappingFile.Extension, mappingFile.GetFileContent());
         }
     }

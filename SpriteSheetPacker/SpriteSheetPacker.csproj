@@ -52,6 +52,7 @@
     <Compile Include="MappingFileFormats\FileTypes.cs" />
     <Compile Include="MappingFileFormats\IMappingFile.cs" />
     <Compile Include="MappingFileFormats\PList.cs" />
+    <Compile Include="MappingFileFormats\SimpleJSON.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpriteSheetPack\Frame.cs" />

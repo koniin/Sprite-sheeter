@@ -7,7 +7,19 @@ namespace SpriteSheetPacker.MappingFileFormats {
 
         public string Extension { get { return ".plist"; } }
 
-        public void Start() {
+        public void Format(string imageFileName, SpriteSheet spriteSheet) {
+            Begin();
+            foreach(var frame in spriteSheet.FrameList.Frames) {
+                AddFrame(frame.FileName, frame.PositionInSheetX, frame.PositionInSheetY, frame.Width, frame.Height);
+            }
+            End(imageFileName, spriteSheet.Image.Width, spriteSheet.Image.Height);
+        }
+
+        public string GetFileContent() {
+            return _plist.ToString();
+        }
+
+        private void Begin() {
             _plist = new StringBuilder();
             _plist.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             _plist.AppendLine("<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">");
@@ -17,7 +29,7 @@ namespace SpriteSheetPacker.MappingFileFormats {
             _plist.AppendLine("		<dict>");
         }
 
-        public void AddFrame(string fileName, int x, int y, int width, int height) {
+        private void AddFrame(string fileName, int x, int y, int width, int height) {
             _plist.AppendLine("			<key>" + fileName + "</key>");
             _plist.AppendLine("			<dict>");
             _plist.AppendLine("				<key>frame</key>");
@@ -33,7 +45,7 @@ namespace SpriteSheetPacker.MappingFileFormats {
             _plist.AppendLine("			</dict>");
         }
 
-        public void End(string fileName, int width, int height) {
+        private void End(string fileName, int width, int height) {
             _plist.AppendLine("		</dict>");
             _plist.AppendLine("		<key>metadata</key>");
             _plist.AppendLine("		<dict>");
@@ -41,16 +53,6 @@ namespace SpriteSheetPacker.MappingFileFormats {
             _plist.AppendLine("		</dict>");
             _plist.AppendLine("	</dict>");
             _plist.AppendLine("</plist>");
-        }
-
-        public void AddFrames(FrameList frameList) {
-            foreach (var frame in frameList.Frames) {
-                AddFrame(frame.FileName, frame.PositionInSheetX, frame.PositionInSheetY, frame.Width, frame.Height);
-            }
-        }
-
-        public string GetFileContent() {
-            return _plist.ToString();
         }
 
         private void AppendMetaData(string fileName, int width, int height) {

@@ -22,33 +22,27 @@ namespace SpriteSheetPacker.MappingFileFormats {
         10 explosion_2 26 100 24 24
         11 bullet_3 50 100 16 16
      */
+
     public class EngineFormatFile : IMappingFile {
         public string Extension => ".data";
-
         private StringBuilder _sb;
         private int _frameCount = 0;
         
-        public void AddFrame(string fileName, int x, int y, int width, int height) {
-            _sb.AppendFormat("{0} {1} {2} {3} {4} {5} {6}", _frameCount, fileName, x, y, width, height, Environment.NewLine);
-            _frameCount++;
-        }
-
-        public void AddFrames(FrameList sheet) {
-            foreach (var frame in sheet.Frames) {
+        public void Format(string imageFileName, SpriteSheet spriteSheet) {
+            _sb = new StringBuilder();
+            _sb.AppendLine(imageFileName);
+            _sb.AppendLine(spriteSheet.FrameList.Frames.Count.ToString());
+            foreach(var frame in spriteSheet.FrameList.Frames) {
                 AddFrame(frame.FileName, frame.PositionInSheetX, frame.PositionInSheetY, frame.Width, frame.Height);
             }
         }
 
-        public void Start() {
-            _sb = new StringBuilder();
-        }
-
-        public void End(string fileName, int width, int height) {
-            _sb.Insert(0, fileName + Environment.NewLine + _frameCount + Environment.NewLine);
-        }
-
         public string GetFileContent() {
             return _sb.ToString();
+        }
+
+        private void AddFrame(string fileName, int x, int y, int width, int height) {
+            _sb.AppendFormat("{0} {1} {2} {3} {4} {5} {6}", _frameCount++, fileName, x, y, width, height, Environment.NewLine);
         }
     }
 }

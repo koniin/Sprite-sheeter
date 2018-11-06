@@ -20,22 +20,26 @@ namespace SpriteSheetPacker {
             int argumentCount = args.Count();
             if (argumentCount == 1) {
                 string[] lines = File.ReadAllLines(args[0]);
-                var lineCount = lines.Count();
-                if (lineCount >= 2) {
-                    var inputpath = lines[0];
-                    var outputpath = lines[1];
-
-                    var fileType = _userSettings.ExportFileType;
-                    if (lineCount >= 3) {
-                        fileType = (FileType)Enum.Parse(typeof(FileType), lines[2]);
-                    }
-
-                    _spriteSheetPacker.PackImagesInFolder(inputpath, outputpath, _exportFileFactory.Create(fileType));
-                    return;
-                }
-                throw new ArgumentException($"Malformed config file {string.Join(", ", args)} => {string.Join(", ", lines)}");
+                CombineImages(lines);
+            } else if (argumentCount >= 2) {
+                CombineImages(args);
             }
-            throw new ArgumentException($"Unknown argument/s {string.Join(", ", args)}");
+        }
+
+        private void CombineImages(string[] arguments) {
+            var argumentCount = arguments.Count();
+            if (argumentCount < 2)
+                throw new ArgumentException($"Too few arguments. Got: {string.Join(", ", arguments)}");
+
+            var inputpath = arguments[0];
+            var outputpath = arguments[1];
+            var fileType = _userSettings.ExportFileType;
+            if (argumentCount >= 3) {
+                fileType = (FileType)Enum.Parse(typeof(FileType), arguments[2]);
+            }
+
+            _spriteSheetPacker.PackImagesInFolder(inputpath, outputpath, _exportFileFactory.Create(fileType));
+            return;
         }
     }
 }
