@@ -7,5 +7,7 @@ namespace SpriteSheetPacker.MappingFileFormats {
         void End(string fileName, int width, int height);
         void AddFrames(FrameList sheet);
         string Extension { get; }
+
+        string GetFileContent();
     }
 }

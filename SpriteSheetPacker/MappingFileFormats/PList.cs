@@ -49,7 +49,7 @@ namespace SpriteSheetPacker.MappingFileFormats {
             }
         }
 
-        public override string ToString() {
+        public string GetFileContent() {
             return _plist.ToString();
         }
 

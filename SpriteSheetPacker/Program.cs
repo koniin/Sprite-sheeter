@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Security.Cryptography;
+using System.Linq;
 using SpriteSheetPacker.ImageManipulation;
 using SpriteSheetPacker.MappingFileFormats;
 
@@ -11,6 +11,12 @@ namespace SpriteSheetPacker {
         private static ExportFileTypeFactory _exportFileFactory;
 
         static void Main(string[] args){
+            if (args.Count() > 0) {
+                var commandFileParser = new CommandFileParser();
+                commandFileParser.Execute(args);
+                return;
+            }
+            
             _spriteSheetPacker = new SpriteSheetPack.SpriteSheetPacker(new SquareFrameListCombiner());
             _userSettings = new UserSettings();
             _exportFileFactory = new ExportFileTypeFactory();
@@ -39,7 +45,7 @@ namespace SpriteSheetPacker {
             Console.WriteLine("Options:");
             Console.WriteLine("1. Combine all images in ONE folder to spritesheet");
             Console.WriteLine("2. Combine all images in all subfolders of entered path");
-            Console.WriteLine("3. Split an image into all its [X x X] components (e.g. 32x32)");
+            Console.WriteLine("3. Split an image into all its [X by Y] components (e.g. 32x32)");
             Console.WriteLine("4. Set default export filetype (e.g. json, plist");
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("\nPress Escape or q to exit\n");

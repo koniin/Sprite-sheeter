@@ -4,7 +4,7 @@ using System.Linq;
 using SpriteSheetPacker.SpriteSheetPack;
 
 namespace SpriteSheetPacker.ImageManipulation {
-    public class SquareFrameListCombiner : IFrameListCombiner{
+    public class SquareFrameListCombiner : IFrameListCombiner {
         private Node _root;
 
         public SpriteSheet Combine(FrameList frameList){
@@ -76,8 +76,8 @@ namespace SpriteSheetPacker.ImageManipulation {
             if (canGrowDown)
                 return GrowDown(width, height);
 
-            throw new Exception("wrong wrong wrong");
-            return null; // need to ensure sensible root starting size to avoid this happening
+            // need to ensure sensible root starting size to avoid this happening
+            throw new Exception("root starting size error");
         }
 
         private Node GrowDown(int width, int height){
