@@ -1,9 +1,9 @@
 # Sprite-sheeter  
-------  
+
 Combines, splits and maps sprites to/from sprite sheets
 
 # Usage  
-------  
+
 Build the project and run the exe file.  
 There are four different commands in this mode:  
 1. Combine all images in ONE folder to spritesheet
@@ -32,7 +32,7 @@ C:\temp\folder_to_put_sprite_sheet_and_data_file\
 EngineFormat  
 
 # Extensions  
-------
+
 To create new exporters (output type) you need to do these three things:
 
 1. Implement the IMappingFile interface.
@@ -40,5 +40,5 @@ To create new exporters (output type) you need to do these three things:
 3. Add the mapping from filetype to the mapper in ExportFileTypeFactory.
 
 # License  
-------  
+
 [MIT](https://github.com/koniin/Sprite-sheeter/blob/master/LICENSE)
