@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using SpriteSheetPacker.SpriteSheetPack;
 
 namespace SpriteSheetPacker.MappingFileFormats {
@@ -23,7 +20,7 @@ namespace SpriteSheetPacker.MappingFileFormats {
         11 bullet_3 50 100 16 16
      */
 
-    public class EngineFormatFile : IMappingFile {
+    public class SimpleData : IMappingFile {
         public string Extension => ".data";
         private StringBuilder _sb;
         private int _frameCount = 0;

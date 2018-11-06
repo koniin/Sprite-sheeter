@@ -2,6 +2,6 @@
     public enum FileType {
         Plist,
         Json,
-        EngineFormat
+        SimpleData
     }
 }

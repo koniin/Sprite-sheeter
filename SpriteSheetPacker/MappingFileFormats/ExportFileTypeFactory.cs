@@ -8,8 +8,8 @@ namespace SpriteSheetPacker.MappingFileFormats {
                     return new SimpleJSON();
                 case FileType.Plist:
                     return new PList();
-                case FileType.EngineFormat:
-                    return new EngineFormatFile();
+                case FileType.SimpleData:
+                    return new SimpleData();
                 default:
                     throw new NotImplementedException("No mapping for fileType");
             }

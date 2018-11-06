@@ -24,7 +24,7 @@ There is also the possibility run it with arguments.
 For now it will then run command nr 1 with either a config file as parameter or the folders and optionally the filetype.  
 
 ```
-SpriteSheetPacker.exe C:\temp\folder_with_sprites C:\temp\output_folder EngineFormat
+SpriteSheetPacker.exe C:\temp\folder_with_sprites C:\temp\output_folder SimpleData
 ```
 
 ```
@@ -35,14 +35,14 @@ Example file:
 ```
 C:\temp\some_folder_with_sprites\  
 C:\temp\folder_to_put_sprite_sheet_and_data_file\  
-EngineFormat
+SimpleData
 ```
 
 # Available export formats  
 
 *  Json
+*  SimpleData
 *  Plist
-*  EngineFormat
 
 Json example:  
 ```
@@ -56,7 +56,7 @@ Json example:
 }
 ```
   
-EngineFormat example:  
+SimpleData example:  
 ```
 sprites.png
 2
