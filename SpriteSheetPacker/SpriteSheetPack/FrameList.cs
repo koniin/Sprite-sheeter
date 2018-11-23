@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
 namespace SpriteSheetPacker.SpriteSheetPack {
-    public class FrameList {
+    public class FrameList : IDisposable {
         public string Name { get; set; }
         public List<Frame> Frames { get; set; }
 
@@ -16,6 +17,12 @@ namespace SpriteSheetPacker.SpriteSheetPack {
             var bmp = new Bitmap(file);
             var frame = new Frame(fileName, bmp);
             Frames.Add(frame);
+        }
+
+        public void Dispose() {
+            foreach (var frame in Frames) {
+                frame.Bitmap.Dispose();
+            }
         }
     }
 }

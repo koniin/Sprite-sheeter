@@ -34,11 +34,38 @@ namespace SpriteSheetPacker {
             var inputpath = arguments[0];
             var outputpath = arguments[1];
             var fileType = _userSettings.ExportFileType;
-            if (argumentCount >= 3) {
+            if (argumentCount == 3) {
                 fileType = (FileType)Enum.Parse(typeof(FileType), arguments[2]);
             }
 
-            _spriteSheetPacker.PackImagesInFolder(inputpath, outputpath, _exportFileFactory.Create(fileType));
+            if (argumentCount == 4) {
+                var makeBlackWhiteCopies = arguments[3];
+                if (!string.IsNullOrWhiteSpace(makeBlackWhiteCopies)) {
+                    var dir = new DirectoryInfo(inputpath);
+                    var temp_dir = Path.Combine(dir.Parent.FullName, "__temp__images");
+                    if (Directory.Exists(temp_dir)) {
+                        Directory.Delete(temp_dir, true);
+                    }
+
+                    Directory.CreateDirectory(temp_dir);
+                    foreach (var f in Directory.EnumerateFiles(inputpath)) {
+                        File.Copy(f, Path.Combine(temp_dir, Path.GetFileName(f)));
+                    }
+
+                    _spriteSheetPacker.MakeBlackWhiteCopies(temp_dir);
+
+                    if (!Directory.Exists(outputpath)) {
+                        Directory.CreateDirectory(outputpath);
+                    }
+
+                    string sheet_name = dir.Name;
+                    _spriteSheetPacker.PackImagesInFolder(temp_dir, outputpath, _exportFileFactory.Create(fileType), sheet_name);
+
+                    Directory.Delete(temp_dir, true);
+                }
+            } else {
+                _spriteSheetPacker.PackImagesInFolder(inputpath, outputpath, _exportFileFactory.Create(fileType));
+            }
             return;
         }
     }

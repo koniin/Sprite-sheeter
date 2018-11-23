@@ -46,7 +46,8 @@ namespace SpriteSheetPacker {
             Console.WriteLine("1. Combine all images in ONE folder to spritesheet");
             Console.WriteLine("2. Combine all images in all subfolders of entered path");
             Console.WriteLine("3. Split an image into all its [X by Y] components (e.g. 32x32)");
-            Console.WriteLine("4. Set default export filetype (e.g. json, plist");
+            Console.WriteLine("4. Make Black and white copies of sprites");
+            Console.WriteLine("5. Set default export filetype (e.g. json, plist");
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("\nPress Escape or q to exit\n");
             Console.ForegroundColor = ConsoleColor.Green;
@@ -67,6 +68,9 @@ namespace SpriteSheetPacker {
                         SplitSheet();
                         break;
                     case '4':
+                        MakeBlackAndWhiteCopies();
+                        break;
+                    case '5':
                         SetDefaultExportType();
                         break;
                 }
@@ -105,6 +109,13 @@ namespace SpriteSheetPacker {
             }
             var newPath = _spriteSheetPacker.SplitImage(inputpath, size);
             _status = "Created new folder with images in " + newPath;
+        }
+
+        private static void MakeBlackAndWhiteCopies() {
+            Console.Write("\n Enter input path: ");
+            var inputpath = Console.ReadLine();
+            _spriteSheetPacker.MakeBlackWhiteCopies(inputpath);
+            _status = "Made black and white copies in: " + inputpath;
         }
 
         private static void SetDefaultExportType() {

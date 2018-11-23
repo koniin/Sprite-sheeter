@@ -20,18 +20,24 @@ namespace SpriteSheetPacker.SpriteSheetPack {
             _imageSplitter = new ImageSplitter();
         }
 
-        public void PackImagesInFolder(string inputpath, string outputpath, IMappingFile mappingFile) {
-            var frameList = _loader.Load(inputpath);
-            var spriteSheet = _combiner.Combine(frameList);
-            _writer.Write(outputpath, spriteSheet);
-            _mappingWriter.Write(outputpath, spriteSheet, mappingFile);
+        public SpriteSheet PackImagesInFolder(string inputpath, string outputpath, IMappingFile mappingFile, string name = null) {
+            using (var frameList = _loader.Load(inputpath)) {
+                var spriteSheet = _combiner.Combine(frameList);
+                if (name != null) {
+                    spriteSheet.Name = name;
+                }
+                _writer.Write(outputpath, spriteSheet);
+                _mappingWriter.Write(outputpath, spriteSheet, mappingFile);
+                return spriteSheet;
+            }
         }
 
-        public void PackImagesFromSubfolders(string path, IMappingFile mappingFile) {
+        public SpriteSheet PackImagesFromSubfolders(string path, IMappingFile mappingFile) {
             var frameListsFromFolders = Directory.GetDirectories(path).SelectMany(d => _loader.Load(d).Frames);
             var spriteSheet = _combiner.Combine(new FrameList() { Frames = frameListsFromFolders.ToList(), Name = new DirectoryInfo(path).Name });
             _writer.Write(path, spriteSheet);
             _mappingWriter.Write(path, spriteSheet, mappingFile);
+            return spriteSheet;
         }
 
         public string SplitImage(string inputpath, int spriteSize) {
@@ -48,6 +54,23 @@ namespace SpriteSheetPacker.SpriteSheetPack {
                 sprites[i].Save(Path.Combine(newPath, filename));
             }
             return newPath;
+        }
+
+        public void MakeBlackWhiteCopies(string inputpath) {
+            var directoryInfo = new DirectoryInfo(inputpath);
+            
+            foreach (var file in directoryInfo.EnumerateFiles()) {
+                var filePath = Path.Combine(directoryInfo.FullName, file.Name);
+                var fileInfo = new FileInfo(filePath);
+                
+                var blackFileName = Path.GetFileNameWithoutExtension(fileInfo.FullName) + "_b";
+                var blackPath = Path.Combine(directoryInfo.FullName, blackFileName + fileInfo.Extension);
+                SolidColorCopier.ChangeAllColorsTo(filePath, blackPath, Color.Black);
+                
+                var whiteFileName = Path.GetFileNameWithoutExtension(fileInfo.FullName) + "_w";
+                var whitePath = Path.Combine(directoryInfo.FullName, whiteFileName + fileInfo.Extension);
+                SolidColorCopier.ChangeAllColorsTo(filePath, whitePath, Color.White);
+            }
         }
 
         private static string GetFileName(int i, string extension) {

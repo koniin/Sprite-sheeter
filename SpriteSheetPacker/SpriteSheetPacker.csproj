@@ -46,6 +46,7 @@
     <Compile Include="CommandFileParser.cs" />
     <Compile Include="ImageManipulation\ImageSplitter.cs" />
     <Compile Include="ImageManipulation\Node.cs" />
+    <Compile Include="ImageManipulation\SolidColorCopier.cs" />
     <Compile Include="ImageManipulation\SquareFrameListCombiner.cs" />
     <Compile Include="MappingFileFormats\SimpleData.cs" />
     <Compile Include="MappingFileFormats\ExportFileTypeFactory.cs" />
