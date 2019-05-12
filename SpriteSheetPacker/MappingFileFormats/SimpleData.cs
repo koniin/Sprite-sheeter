@@ -30,7 +30,7 @@ namespace SpriteSheetPacker.MappingFileFormats {
             _sb.AppendLine(imageFileName);
             _sb.AppendLine(spriteSheet.FrameList.Frames.Count.ToString());
             foreach(var frame in spriteSheet.FrameList.Frames) {
-                AddFrame(frame.FileName, frame.PositionInSheetX, frame.PositionInSheetY, frame.Width, frame.Height);
+                AddFrame(frame.FileName.Replace(".png", ""), frame.PositionInSheetX, frame.PositionInSheetY, frame.Width, frame.Height);
             }
         }
 
