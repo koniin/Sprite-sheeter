@@ -47,7 +47,8 @@ namespace SpriteSheetPacker {
             Console.WriteLine("2. Combine all images in all subfolders of entered path");
             Console.WriteLine("3. Split an image into all its [X by Y] components (e.g. 32x32)");
             Console.WriteLine("4. Make Black and white copies of sprites");
-            Console.WriteLine("5. Set default export filetype (e.g. json, plist");
+            Console.WriteLine("5. Scale images in a folder");
+            Console.WriteLine("6. Set default export filetype (e.g. json, plist");
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("\nPress Escape or q to exit\n");
             Console.ForegroundColor = ConsoleColor.Green;
@@ -71,6 +72,9 @@ namespace SpriteSheetPacker {
                         MakeBlackAndWhiteCopies();
                         break;
                     case '5':
+                        ScaleImages();
+                        break;
+                    case '6':
                         SetDefaultExportType();
                         break;
                 }
@@ -116,6 +120,23 @@ namespace SpriteSheetPacker {
             var inputpath = Console.ReadLine();
             _spriteSheetPacker.MakeBlackWhiteCopies(inputpath);
             _status = "Made black and white copies in: " + inputpath;
+        }
+
+        private static void ScaleImages() {
+            string requestedSize = string.Empty, inputpath = string.Empty;
+            int newSize = 0;
+            while (!int.TryParse(requestedSize, out int size)) {
+                Console.Write("\n Enter new size (number greater than 0): ");
+                requestedSize = Console.ReadLine();
+                newSize = int.Parse(requestedSize);
+            }
+            while (!System.IO.Directory.Exists(inputpath)) {
+                Console.Write("\n Enter input images path: ");
+                inputpath = Console.ReadLine();
+            }
+
+            var newPath =_spriteSheetPacker.ResizeImages(inputpath, newSize);
+            _status = $"Created new images in: {newPath}";
         }
 
         private static void SetDefaultExportType() {

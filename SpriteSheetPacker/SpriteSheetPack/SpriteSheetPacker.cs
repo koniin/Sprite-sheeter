@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using SpriteSheetPacker.ImageManipulation;
@@ -71,6 +72,22 @@ namespace SpriteSheetPacker.SpriteSheetPack {
                 var whitePath = Path.Combine(directoryInfo.FullName, whiteFileName + fileInfo.Extension);
                 SolidColorCopier.ChangeAllColorsTo(filePath, whitePath, Color.White);
             }
+        }
+
+        public string ResizeImages(string inputpath, int newSize) {
+            var directoryInfo = new DirectoryInfo(inputpath);
+            
+            var newPath = directoryInfo.FullName + $"_{newSize}";
+            
+            if (!Directory.Exists(newPath))
+                Directory.CreateDirectory(newPath);
+
+            foreach (var file in directoryInfo.EnumerateFiles()) {
+                var image = ImageScaler.ResizeImage(file.FullName, newSize, newSize);
+                image.Save(Path.Combine(newPath, file.Name));
+            }
+
+            return newPath;
         }
 
         private static string GetFileName(int i, string extension) {
