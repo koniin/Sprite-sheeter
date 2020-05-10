@@ -4,7 +4,12 @@ using System.IO;
 namespace SpriteSheetPacker.SpriteSheetPack {
     public class ImageWriter {
         public void Write(string path, SpriteSheet spriteSheet) {
-            spriteSheet.Image.Save(Path.Combine(path, spriteSheet.Name) + ".png", ImageFormat.Png);
+            if (!Directory.Exists(path)) {
+                throw new System.ArgumentException($"Directory does not exist: {path}");
+            }
+
+            var p = Path.Combine(path, spriteSheet.Name);
+            spriteSheet.Image.Save($"{p}.png", ImageFormat.Png);
         }
     }
 }
