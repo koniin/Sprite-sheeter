@@ -59,18 +59,20 @@ namespace SpriteSheetPacker.SpriteSheetPack {
 
         public void MakeBlackWhiteCopies(string inputpath) {
             var directoryInfo = new DirectoryInfo(inputpath);
-            
+
+            var transparent = Color.FromArgb(0, 0, 0, 0);
+
             foreach (var file in directoryInfo.EnumerateFiles()) {
                 var filePath = Path.Combine(directoryInfo.FullName, file.Name);
                 var fileInfo = new FileInfo(filePath);
                 
                 var blackFileName = Path.GetFileNameWithoutExtension(fileInfo.FullName) + "_b";
                 var blackPath = Path.Combine(directoryInfo.FullName, blackFileName + fileInfo.Extension);
-                SolidColorCopier.ChangeAllColorsTo(filePath, blackPath, Color.Black);
+                ColorChanger.ChangeAllColorsNotEqualTo(filePath, blackPath, transparent, Color.Black);
                 
                 var whiteFileName = Path.GetFileNameWithoutExtension(fileInfo.FullName) + "_w";
                 var whitePath = Path.Combine(directoryInfo.FullName, whiteFileName + fileInfo.Extension);
-                SolidColorCopier.ChangeAllColorsTo(filePath, whitePath, Color.White);
+                ColorChanger.ChangeAllColorsNotEqualTo(filePath, whitePath, transparent, Color.White);
             }
         }
 
