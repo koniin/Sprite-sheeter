@@ -1,6 +1,7 @@
 using SpriteSheeter.Lib.ImageManipulation;
 using SpriteSheeter.Lib.MappingFileFormats;
 using SpriteSheeter.Lib.SpriteSheetPack;
+using System;
 
 namespace SpriteSheeter.Lib
 {
@@ -17,8 +18,11 @@ namespace SpriteSheeter.Lib
             _exportFileFactory = new ExportFileTypeFactory();
         }
 
-
-        public void ExecuteCommandFile(string[] args) {
+        /// <summary>
+        /// Execute pack config file
+        /// </summary>
+        /// <param name="args"></param>
+        public void ExecuteConfigFile(string[] args) {
             var commandFileParser = new CommandFileParser(
                 _spriteSheetPacker,
                 _userSettings,
@@ -27,79 +31,86 @@ namespace SpriteSheeter.Lib
             commandFileParser.Execute(args);
         }
 
-        public void PackFolder(string inputpath, string outputpath)
+        /// <summary>
+        /// Combines all files in one folder and writes them into one spritesheet in output folder.
+        /// </summary>
+        /// <param name="inputpath"></param>
+        /// <param name="outputpath"></param>
+        public string PackFolder(string inputpath, string outputpath)
         {
             _spriteSheetPacker.PackImagesInFolder(inputpath, outputpath, _exportFileFactory.Create(_userSettings.ExportFileType));
+            return $"Created new sheet in {outputpath}";
         }
 
-        /*
-         
-        private static void CombineFromSubFolders(){
-            Console.Write("\n Enter path: ");
-            var path = Console.ReadLine();
+        /// <summary>
+        /// Combine all sprites in all subfolders into one spritesheet at path
+        /// </summary>
+        /// <param name="path"></param>
+        public string CombineFromSubFolders(string path) 
+        {
             _spriteSheetPacker.PackImagesFromSubfolders(path, _exportFileFactory.Create(_userSettings.ExportFileType));
-            _status = "Created new sheet @ " + path;
+            return $"Created new sheet @ {path}";
         }
 
-        private static void SplitSheet() {
+        /// <summary>
+        /// Split a sheet into frames of requestedSize x requestedSize
+        /// </summary>
+        /// <param name="requestedSize"></param>
+        /// <param name="inputpath"></param>
+        /// <returns></returns>
+        public string SplitSheet(string requestedSize, string inputpath) {
             short size;
-            string requestedSize = string.Empty, inputpath = string.Empty;
-            while (!short.TryParse(requestedSize, out size)) {
-                Console.Write("\n Enter size (number greater than 0): ");
-                requestedSize = Console.ReadLine();
+            if(!short.TryParse(requestedSize, out size)) {
+                return "requestedSize '{requestedSize}' is not a number (short)";
             }
-            while (!System.IO.File.Exists(inputpath)) {
-                Console.Write("\n Enter input image path: ");
-                inputpath = Console.ReadLine();
+
+            if(!System.IO.File.Exists(inputpath)) {
+                return $"file @ {inputpath} does not exist";
             }
+
             var newPath = _spriteSheetPacker.SplitImage(inputpath, size);
-            _status = "Created new folder with images in " + newPath;
+            return $"Created new folder with images in {newPath}";
         }
 
-        private static void MakeBlackAndWhiteCopies() {
-            Console.Write("\n Enter input path: ");
-            var inputpath = Console.ReadLine();
+        /// <summary>
+        /// Creates black and white copes of all images in inputpath.
+        /// </summary>
+        /// <param name="inputpath"></param>
+        /// <returns></returns>
+        public string MakeBlackAndWhiteCopies(string inputpath) {
             _spriteSheetPacker.MakeBlackWhiteCopies(inputpath);
-            _status = "Made black and white copies in: " + inputpath;
+            return $"Made black and white copies in {inputpath}";
         }
 
-        private static void ScaleImages() {
-            string requestedSize = string.Empty, inputpath = string.Empty;
-            int newSize = 0;
-            while (!int.TryParse(requestedSize, out int size)) {
-                Console.Write("\n Enter new size (number greater than 0): ");
-                requestedSize = Console.ReadLine();
-                newSize = int.Parse(requestedSize);
-            }
-            while (!System.IO.Directory.Exists(inputpath)) {
-                Console.Write("\n Enter input images path: ");
-                inputpath = Console.ReadLine();
+        /// <summary>
+        /// Resizes images to the requested size in the inputpath.
+        /// </summary>
+        /// <param name="requestedSize"></param>
+        /// <param name="inputpath"></param>
+        /// <returns></returns>
+        public string ScaleImages(string requestedSize, string inputpath) {
+            int size;
+            if (!int.TryParse(requestedSize, out size)) {
+                return "requestedSize '{requestedSize}' is not a number (short)";
             }
 
-            var newPath =_spriteSheetPacker.ResizeImages(inputpath, newSize);
-            _status = $"Created new images in: {newPath}";
+            if (!System.IO.File.Exists(inputpath)) {
+                return $"file @ {inputpath} does not exist";
+            }
+
+            var newPath =_spriteSheetPacker.ResizeImages(inputpath, size);
+            return $"Created new images in: {newPath}";
         }
 
-        private static void SetDefaultExportType() {
-            Console.Write("\n Choose file type:");
-            var choices = Enum.GetNames(typeof (FileType));
-            int i = 0;
-            foreach (var name in choices) {
-                i++;
-                Console.Write("\n " + i + ". " + name);
-            }
-
-            short choice = 0;
-            string requestedChoice = string.Empty;
-            while (!short.TryParse(requestedChoice, out choice)) {
-                Console.Write("\n : ");
-                requestedChoice = Console.ReadLine();
-            }
-
-            _userSettings.ExportFileType = (FileType)Enum.GetValues(typeof(FileType)).GetValue(choice - 1);
-            _userSettings.Save();
-            _status = "Export file type set to: " + _userSettings.ExportFileType;
+        /// <summary>
+        /// Set the default export type (sets in environment variable).
+        /// </summary>
+        /// <param name="fileType"></param>
+        /// <returns></returns>
+        public string SetDefaultExportType(FileType fileType) {
+            Environment.SetEnvironmentVariable(UserSettings.ENVIRONMENTVARIABLE_NAME, fileType.ToString());
+            _userSettings.ExportFileType = fileType;
+            return $"Export file type set to: {_userSettings.ExportFileType} in {UserSettings.ENVIRONMENTVARIABLE_NAME} environment variable.";
         }
-         */
     }
 }

@@ -7,12 +7,13 @@ namespace SpriteSheeter.Cli
     {
         public static void Main(string[] args)
         {
-            //var userSettings = DefaultUserSettingsReader.Read();
-            var spriteSheetMaker = new SpriteSheetMaker(new UserSettings(Lib.MappingFileFormats.FileType.SimpleData));
-            SpriteSheeterCommands ss = new SpriteSheeterCommands(spriteSheetMaker);
+            var userSettings = UserSettings.CreateFromEnvironmentVariable();
+            Console.WriteLine($"ExportFileType: {userSettings.ExportFileType}");
+            var spriteSheetMaker = new SpriteSheetMaker(userSettings);
+            var ss = new SpriteSheeterCommands(spriteSheetMaker);
 
             if(args.Length > 0) {
-                ss.Execute(args);
+                ss.eval(string.Join(' ', args));
                 return;
             }
 

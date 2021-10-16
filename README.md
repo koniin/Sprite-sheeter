@@ -44,6 +44,9 @@ SimpleData
 *  SimpleData
 *  Plist
 
+Set type using Environment variable (default is SimpleData):    
+$env:SPRITESHEETER_FILETYPE = 'Json'
+
 Json example:  
 ```
 {

@@ -1,4 +1,5 @@
 ﻿using SpriteSheeter.Lib;
+using SpriteSheeter.Lib.MappingFileFormats;
 using System;
 
 namespace SpriteSheeter.Cli {
@@ -9,31 +10,47 @@ namespace SpriteSheeter.Cli {
             _spriteSheeter = spriteSheeter;
         }
 
-        private string CombineAllInFolder(string[] args) {
-            // Console.Write("\n Enter input path: ");
-            // var inputpath = Console.ReadLine();
-            // Console.Write("\n Enter output path: ");
-            // var outputpath = Console.ReadLine();
-            _spriteSheeter.PackFolder(args[0], args[1]);
-            return "Created new sheet in " + args[1];
+        private string ExecuteConfigFile(string[] args) {
+            _spriteSheeter.ExecuteConfigFile(args);
+            return "Command file executed succesfully";
         }
 
-        // private string TwoArg(string[] args)
-        // {
-        //     Console.WriteLine($"Got args: [{args[0]}, {args[1]}]");
-        //     return "TwoArg success";
-        // }
+        private string CombineAllInFolder(string[] args) {
+            return _spriteSheeter.PackFolder(args[0], args[1]);
+        }
+
+        private string CombineFromSubFolders(string[] args) {
+            return _spriteSheeter.CombineFromSubFolders(args[0]);
+        }
+
+        private string SplitSheet(string[] args) {
+            return _spriteSheeter.SplitSheet(args[0], args[1]);
+        }
+
+        private string MakeBlackAndWhiteCopies(string[] args) {
+            return _spriteSheeter.MakeBlackAndWhiteCopies(args[0]);
+        }
+
+        private string ScaleImages(string[] args) {
+            return _spriteSheeter.ScaleImages(args[0], args[1]);
+        }
+
+        private string SetDefaultExportType(string[] args) {
+            if (Enum.TryParse(args[0], out FileType fileType)) {
+                return _spriteSheeter.SetDefaultExportType(fileType);
+            } else {
+                return $"Could not parse: {args[0]} into a fileType";
+            }
+        }
 
         public override void register_commands() {
-            register_command(CombineAllInFolder, 2, "combinefolder", "Combines all sprites from input folder into a spritesheet in output folder");
-            // register_command(TwoArg, 2, "two", "Two args required.");
-        }
-
-
-        public void Execute(string[] args) {
-            throw new NotImplementedException();
-            // var commandFileParser = new CommandFileParser();
-            // commandFileParser.Execute(args);
+            register_command(ExecuteConfigFile, 1, "cfg", "Execute commands from a config file [filepath]");
+            register_command(CombineAllInFolder, 2, "combinefolder", "Combines all sprites from input folder into a spritesheet in output folder [inputpath, outputpath]");
+            register_command(CombineFromSubFolders, 1, "combinesub", "Combines all sprites from subfolders in folder into a spritesheet in folder [inputpath]");
+            register_command(SplitSheet, 2, "split", "Split a sheet into frames of requestedSize x requestedSize [size, inputpath]");
+            register_command(MakeBlackAndWhiteCopies, 1, "bw", "Creates black and white copes of all images in inputpath. [inputpath]");
+            register_command(ScaleImages, 2, "scale", "Resizes images to the requested size in the inputpath. [size, inputpath]");
+            register_command(SetDefaultExportType, 1, "filetype", "Set the default export type (sets in environment variable). [filetype]");
         }
     }
 }
