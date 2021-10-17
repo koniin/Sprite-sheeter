@@ -45,7 +45,7 @@ namespace SpriteSheeter.Lib {
                 }
             }
             commandResult.Add(currentCommand);
-            return ("Succes parsing file.", commandResult.ToArray());
+            return ("Succes.", commandResult.ToArray());
         }
 
         //private static void Ok() {

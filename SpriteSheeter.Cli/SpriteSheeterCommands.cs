@@ -14,7 +14,7 @@ namespace SpriteSheeter.Cli {
             var (status, commands) = _spriteSheeter.ParseConfigFile(args);
 
             // We need to create a new command interface because otherwise 
-            // we mess up state when we eval inside an eval
+            // we mess up state if we eval inside an eval
             var spc = new SpriteSheeterCommands(_spriteSheeter);
             foreach (var command in commands) {
                 Console.WriteLine(spc.eval(command));
