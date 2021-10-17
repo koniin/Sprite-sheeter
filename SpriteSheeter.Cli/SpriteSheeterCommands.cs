@@ -11,7 +11,16 @@ namespace SpriteSheeter.Cli {
         }
 
         private string ExecuteConfigFile(string[] args) {
-            return _spriteSheeter.ExecuteConfigFile(args);
+            var (status, commands) = _spriteSheeter.ParseConfigFile(args);
+
+            // We need to create a new command interface because otherwise 
+            // we mess up state when we eval inside an eval
+            var spc = new SpriteSheeterCommands(_spriteSheeter);
+            foreach (var command in commands) {
+                Console.WriteLine(spc.eval(command));
+            }
+
+            return status;
         }
 
         private string CombineAllInFolder(string[] args) {

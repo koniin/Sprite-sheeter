@@ -1,117 +1,150 @@
-﻿using SpriteSheeter.Lib.MappingFileFormats;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SpriteSheeter.Lib {
     public class CommandFileParser {
-        private readonly SpriteSheetMaker _spriteSheetMaker;
+        private readonly string[] AVAILABLE_COMMANDS = new string[6] {
+            "combinefolder", "combinesub", "split", "bw", "scale", "filetype"
+        };
 
-        public CommandFileParser(SpriteSheetMaker spriteSheetMaker) {
-            _spriteSheetMaker = spriteSheetMaker;
-        }
-
-        internal string Execute(string[] args) {
+        public (string, string[]) Parse(string[] args) {
             if (args.Length > 1) {
-                return $"Wrong number of arguments got {args.Length} expected 1.";
+                return ($"Wrong number of arguments got {args.Length} expected 1.", Array.Empty<string>());
             }
 
             if(!File.Exists(args[0])) {
-                return $"Config file @ {args[0]} does not exist.";
+                return ($"Config file @ {args[0]} does not exist.", Array.Empty<string>());
             }
 
             string[] lines = File.ReadAllLines(args[0]);
             if (lines.Length == 0) {
-                return $"Config file @ {args[0]} is empty.";
+                return ($"Config file @ {args[0]} is empty.", Array.Empty<string>());
             }
 
-            return CombineImages(lines);
+            return ParseCommands(lines);
         }
 
-        private string CombineImages(string[] arguments) {
+        private (string, string[]) ParseCommands(string[] arguments) {
             int rowCounter = 0;
             var enumerator = arguments.GetEnumerator();
+            List<string> commandResult = new List<string>();
+            string currentCommand = "";
             while (enumerator.MoveNext()) {
-                var cmd = enumerator.Current;
-                rowCounter++;
-
-                switch (cmd) {
-                    case "combinefolder":
-                        string inputpath = null, outputpath = null;
-                        FileType fileType = _spriteSheetMaker.ExportFiletype;
-                        if (enumerator.MoveNext()) {
-                            inputpath = enumerator.Current as string;
-                        }
-                        if (enumerator.MoveNext()) {
-                            outputpath = enumerator.Current as string;
-                        }
-                        if (enumerator.MoveNext()) {
-                            var ft = enumerator.Current as string;
-                            fileType = Enum.Parse<FileType>(ft, true);
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(inputpath) && !string.IsNullOrWhiteSpace(inputpath)) {
-                            _spriteSheetMaker.PackFolder(inputpath, outputpath, fileType);
-                        } else {
-                            return $"Missing argument to combinefolder at row: {rowCounter}";
-                        }
-
-                        break;
-                    case "combinesub":
-                        break;
-                    case "split":
-                        break;
-                    case "bw":
-                        break;
-                    case "scale":
-                        break;
+                var row = enumerator.Current as string;
+                
+                if(AVAILABLE_COMMANDS.Contains(row.ToLowerInvariant())) {
+                    rowCounter++;
+                    if(!string.IsNullOrWhiteSpace(currentCommand)) {
+                        commandResult.Add(currentCommand);
+                    }
+                    currentCommand = row;
+                } else {
+                    currentCommand += " " + row;
                 }
-
             }
-            return "All commands executed.";
-
-
-
-
-            //var argumentCount = arguments.Count();
-            //if (argumentCount < 2)
-            //    throw new ArgumentException($"Too few arguments. Got: {string.Join(", ", arguments)}");
-
-            //var inputpath = arguments[0];
-            //var outputpath = arguments[1];
-            //var fileType = _userSettings.ExportFileType;
-            //if (argumentCount == 3) {
-            //    fileType = (FileType)Enum.Parse(typeof(FileType), arguments[2]);
-            //}
-
-            //if (argumentCount == 4) {
-            //    var makeBlackWhiteCopies = arguments[3];
-            //    if (!string.IsNullOrWhiteSpace(makeBlackWhiteCopies)) {
-            //        var dir = new DirectoryInfo(inputpath);
-            //        var temp_dir = Path.Combine(dir.Parent.FullName, "__temp__images");
-            //        if (Directory.Exists(temp_dir)) {
-            //            Directory.Delete(temp_dir, true);
-            //        }
-
-            //        Directory.CreateDirectory(temp_dir);
-            //        foreach (var f in Directory.EnumerateFiles(inputpath)) {
-            //            File.Copy(f, Path.Combine(temp_dir, Path.GetFileName(f)));
-            //        }
-
-            //        _spriteSheetPacker.MakeBlackWhiteCopies(temp_dir);
-
-            //        if (!Directory.Exists(outputpath)) {
-            //            Directory.CreateDirectory(outputpath);
-            //        }
-
-            //        string sheet_name = dir.Name;
-            //        _spriteSheetPacker.PackImagesInFolder(temp_dir, outputpath, _exportFileFactory.Create(fileType), sheet_name);
-
-            //        Directory.Delete(temp_dir, true);
-            //    }
-            //} else {
-            //    _spriteSheetPacker.PackImagesInFolder(inputpath, outputpath, _exportFileFactory.Create(fileType));
-            //}
-            //return;
+            commandResult.Add(currentCommand);
+            return ("Succes parsing file.", commandResult.ToArray());
         }
+
+        //private static void Ok() {
+        //    switch (row) {
+        //        case "combinefolder": {
+        //                string inputpath = null, outputpath = null;
+        //                FileType fileType = _spriteSheetMaker.ExportFiletype;
+        //                if (enumerator.MoveNext()) {
+        //                    inputpath = enumerator.Current as string;
+        //                }
+        //                if (enumerator.MoveNext()) {
+        //                    outputpath = enumerator.Current as string;
+        //                }
+        //                if (enumerator.MoveNext()) {
+        //                    var ft = enumerator.Current as string;
+        //                    fileType = Enum.Parse<FileType>(ft, true);
+        //                }
+
+        //                if (IsValidDirectoryArgument(inputpath) && IsValidDirectoryArgument(outputpath)) {
+        //                    _spriteSheetMaker.PackFolder(inputpath, outputpath, fileType);
+        //                } else {
+        //                    return $"Invalid argument to {row} at row: {rowCounter} [inputpath: {inputpath}, outputpath: {outputpath}]";
+        //                }
+        //            }
+        //            break;
+        //        case "combinesub": {
+        //                string inputpath = null;
+        //                FileType fileType = _spriteSheetMaker.ExportFiletype;
+        //                if (enumerator.MoveNext()) {
+        //                    inputpath = enumerator.Current as string;
+        //                }
+        //                if (enumerator.MoveNext()) {
+        //                    var ft = enumerator.Current as string;
+        //                    fileType = Enum.Parse<FileType>(ft, true);
+        //                }
+
+        //                if (IsValidDirectoryArgument(inputpath)) {
+        //                    _spriteSheetMaker.CombineFromSubFolders(inputpath, fileType);
+        //                } else {
+        //                    return $"Invalid argument to {row} at row: {rowCounter} [inputpath: {inputpath}]";
+        //                }
+        //            }
+        //            break;
+        //        case "split": {
+        //                string requestedSize = null, inputpath = null;
+        //                if (enumerator.MoveNext()) {
+        //                    requestedSize = enumerator.Current as string;
+        //                }
+        //                if (enumerator.MoveNext()) {
+        //                    inputpath = enumerator.Current as string;
+        //                }
+
+        //                if (IsValidSizeArgument(requestedSize) && IsValidDirectoryArgument(inputpath)) {
+        //                    _spriteSheetMaker.SplitSheet(requestedSize, inputpath);
+        //                } else {
+        //                    return $"Invalid argument to {row} at row: {rowCounter} [requestedSize: {requestedSize},inputpath: {inputpath}]";
+        //                }
+        //            }
+        //            break;
+        //        case "bw": {
+        //                string inputpath = null;
+        //                if (enumerator.MoveNext()) {
+        //                    inputpath = enumerator.Current as string;
+        //                }
+
+        //                if (IsValidDirectoryArgument(inputpath)) {
+        //                    _spriteSheetMaker.MakeBlackAndWhiteCopies(inputpath);
+        //                } else {
+        //                    return $"Invalid argument to {row} at row: {rowCounter} [inputpath: {inputpath}]";
+        //                }
+        //            }
+        //            break;
+        //        case "scale": {
+        //                string inputpath = null, outputpath = null;
+        //                if (enumerator.MoveNext()) {
+        //                    inputpath = enumerator.Current as string;
+        //                }
+        //                if (enumerator.MoveNext()) {
+        //                    outputpath = enumerator.Current as string;
+        //                }
+
+        //                if (IsValidDirectoryArgument(inputpath) && IsValidDirectoryArgument(outputpath)) {
+        //                    _spriteSheetMaker.ScaleImages(inputpath, outputpath);
+        //                } else {
+        //                    return $"Invalid argument to {row} at row: {rowCounter} [inputpath: {inputpath}, outputpath: {outputpath}]";
+        //                }
+        //            }
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //}
+
+        //private static bool IsValidDirectoryArgument(string inputpath) {
+        //    return !string.IsNullOrWhiteSpace(inputpath) && Directory.Exists(inputpath);
+        //}
+
+        //private static bool IsValidSizeArgument(string requestedSize) {
+        //    return !string.IsNullOrWhiteSpace(requestedSize) && int.TryParse(requestedSize, out _);
+        //}
     }
 }

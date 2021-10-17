@@ -21,16 +21,17 @@ namespace SpriteSheeter.Lib
         }
 
         /// <summary>
-        /// Execute pack config file
+        /// Returns status and the parsed commands 
         /// </summary>
         /// <param name="args"></param>
-        public string ExecuteConfigFile(string[] args) {
-            var commandFileParser = new CommandFileParser(this);
-            return commandFileParser.Execute(args);
+        public (string, string[]) ParseConfigFile(string[] args) {
+            var commandFileParser = new CommandFileParser();
+            return commandFileParser.Parse(args);
         }
 
         /// <summary>
         /// Combines all files in one folder and writes them into one spritesheet in output folder.
+        /// Uses usersettings exportfiletype
         /// </summary>
         /// <param name="inputpath"></param>
         /// <param name="outputpath"></param>
@@ -52,11 +53,20 @@ namespace SpriteSheeter.Lib
 
         /// <summary>
         /// Combine all sprites in all subfolders into one spritesheet at path
+        /// Uses usersettings exportfiletype
         /// </summary>
         /// <param name="path"></param>
-        public string CombineFromSubFolders(string path) 
+        public string CombineFromSubFolders(string path) {
+            return CombineFromSubFolders(path, _userSettings.ExportFileType);
+        }
+
+        /// <summary>
+        /// Combine all sprites in all subfolders into one spritesheet at path
+        /// </summary>
+        /// <param name="path"></param>
+        public string CombineFromSubFolders(string path, FileType fileType) 
         {
-            _spriteSheetPacker.PackImagesFromSubfolders(path, _exportFileFactory.Create(_userSettings.ExportFileType));
+            _spriteSheetPacker.PackImagesFromSubfolders(path, _exportFileFactory.Create(fileType));
             return $"Created new sheet @ {path}";
         }
 

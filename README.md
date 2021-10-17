@@ -9,6 +9,8 @@ Created by Henrik Länsman.
 
 # Usage  
 
+To run interactive mode:
+
 ```
 dotnet build
 dotnet run 
@@ -21,13 +23,18 @@ dotnet run --project .\SpriteSheeter.Cli\SpriteSheeter.Cli.csproj -- combinefold
 ```
 
 ```
+dotnet run --project .\SpriteSheeter.Cli\SpriteSheeter.Cli.csproj -- cfg c:\code\sprite-sheeter\examples\sample_config.cfg
+```
+
+```
 SpriteSheetPacker.exe C:\temp\some_config_file[extension]
 ```
 
 Example file:  
 ```
-C:\temp\some_folder_with_sprites\  
-C:\temp\folder_to_put_sprite_sheet_and_data_file\  
+combinefolder
+C:\temp\sprites\player
+C:\temp\sprites
 SimpleData
 ```
 
