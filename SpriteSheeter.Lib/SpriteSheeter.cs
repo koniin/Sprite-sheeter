@@ -10,7 +10,9 @@ namespace SpriteSheeter.Lib
         private SpriteSheetPacker _spriteSheetPacker;
         private UserSettings _userSettings;
         private ExportFileTypeFactory _exportFileFactory;
-        
+
+        public FileType ExportFiletype => _userSettings.ExportFileType;
+
         public SpriteSheetMaker(UserSettings userSettings)
         {
             _spriteSheetPacker = new SpriteSheetPacker(new SquareFrameListCombiner());
@@ -32,9 +34,19 @@ namespace SpriteSheeter.Lib
         /// </summary>
         /// <param name="inputpath"></param>
         /// <param name="outputpath"></param>
-        public string PackFolder(string inputpath, string outputpath)
+        public string PackFolder(string inputpath, string outputpath) {
+            return PackFolder(inputpath, outputpath, _userSettings.ExportFileType);
+        }
+
+        /// <summary>
+        /// Combines all files in one folder and writes them into one spritesheet in output folder.
+        /// </summary>
+        /// <param name="inputpath"></param>
+        /// <param name="outputpath"></param>
+        public string PackFolder(string inputpath, string outputpath, FileType fileType)
         {
-            _spriteSheetPacker.PackImagesInFolder(inputpath, outputpath, _exportFileFactory.Create(_userSettings.ExportFileType));
+            var mappingFile = _exportFileFactory.Create(fileType);
+            _spriteSheetPacker.PackImagesInFolder(inputpath, outputpath, mappingFile);
             return $"Created new sheet in {outputpath}";
         }
 

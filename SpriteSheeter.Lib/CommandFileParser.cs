@@ -1,9 +1,6 @@
 ﻿using SpriteSheeter.Lib.MappingFileFormats;
-using SpriteSheeter.Lib.SpriteSheetPack;
 using System;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace SpriteSheeter.Lib {
     public class CommandFileParser {
@@ -31,26 +28,31 @@ namespace SpriteSheeter.Lib {
         }
 
         private string CombineImages(string[] arguments) {
-
-            StringBuilder failures = new StringBuilder();
-
+            int rowCounter = 0;
             var enumerator = arguments.GetEnumerator();
             while (enumerator.MoveNext()) {
                 var cmd = enumerator.Current;
+                rowCounter++;
 
-                // combinefolder combinesub  split bw scale
                 switch (cmd) {
                     case "combinefolder":
                         string inputpath = null, outputpath = null;
+                        FileType fileType = _spriteSheetMaker.ExportFiletype;
                         if (enumerator.MoveNext()) {
                             inputpath = enumerator.Current as string;
                         }
                         if (enumerator.MoveNext()) {
                             outputpath = enumerator.Current as string;
                         }
+                        if (enumerator.MoveNext()) {
+                            var ft = enumerator.Current as string;
+                            fileType = Enum.Parse<FileType>(ft, true);
+                        }
 
-                        if(!string.IsNullOrWhiteSpace(inputpath) && !string.IsNullOrWhiteSpace(inputpath)) {
-                            _spriteSheetMaker.PackFolder(inputpath, outputpath);
+                        if (!string.IsNullOrWhiteSpace(inputpath) && !string.IsNullOrWhiteSpace(inputpath)) {
+                            _spriteSheetMaker.PackFolder(inputpath, outputpath, fileType);
+                        } else {
+                            return $"Missing argument to combinefolder at row: {rowCounter}";
                         }
 
                         break;
