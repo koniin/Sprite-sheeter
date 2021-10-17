@@ -22,13 +22,9 @@ namespace SpriteSheeter.Lib
         /// Execute pack config file
         /// </summary>
         /// <param name="args"></param>
-        public void ExecuteConfigFile(string[] args) {
-            var commandFileParser = new CommandFileParser(
-                _spriteSheetPacker,
-                _userSettings,
-                _exportFileFactory);
-
-            commandFileParser.Execute(args);
+        public string ExecuteConfigFile(string[] args) {
+            var commandFileParser = new CommandFileParser(this);
+            return commandFileParser.Execute(args);
         }
 
         /// <summary>
@@ -94,8 +90,8 @@ namespace SpriteSheeter.Lib
                 return "requestedSize '{requestedSize}' is not a number (short)";
             }
 
-            if (!System.IO.File.Exists(inputpath)) {
-                return $"file @ {inputpath} does not exist";
+            if (!System.IO.Directory.Exists(inputpath)) {
+                return $"dir @ {inputpath} does not exist";
             }
 
             var newPath =_spriteSheetPacker.ResizeImages(inputpath, size);

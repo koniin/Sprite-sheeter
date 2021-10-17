@@ -13,7 +13,7 @@ namespace SpriteSheeter.Cli
             var ss = new SpriteSheeterCommands(spriteSheetMaker);
 
             if(args.Length > 0) {
-                ss.eval(string.Join(' ', args));
+                Console.WriteLine(ss.eval(string.Join(' ', args)));
                 return;
             }
 

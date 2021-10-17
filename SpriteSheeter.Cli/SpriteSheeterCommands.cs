@@ -11,8 +11,7 @@ namespace SpriteSheeter.Cli {
         }
 
         private string ExecuteConfigFile(string[] args) {
-            _spriteSheeter.ExecuteConfigFile(args);
-            return "Command file executed succesfully";
+            return _spriteSheeter.ExecuteConfigFile(args);
         }
 
         private string CombineAllInFolder(string[] args) {
@@ -42,7 +41,7 @@ namespace SpriteSheeter.Cli {
                 return $"Could not parse: {args[0]} into a fileType";
             }
         }
-
+        
         public override void register_commands() {
             register_command(ExecuteConfigFile, 1, "cfg", "Execute commands from a config file [filepath]");
             register_command(CombineAllInFolder, 2, "combinefolder", "Combines all sprites from input folder into a spritesheet in output folder [inputpath, outputpath]");
