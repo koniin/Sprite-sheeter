@@ -1,8 +1,12 @@
 # Sprite-sheeter features  
 
-* Combine multiple sprites into a sprite sheet (and description file)  
-* Combine multiple folders into one sprite sheet (and description file)    
-* Split an existing sheet where all sprites are the same size into multiple sprites  
+* cfg            Execute commands from a config file [filepath]
+* combinefolder  Combines all sprites from input folder into a spritesheet in output folder [inputpath, outputpath]
+* combinesub     Combines all sprites from subfolders in folder into a spritesheet in folder [inputpath]
+* split          Split a sheet into frames of size x size [size, inputpath]
+* bw             Creates black and white copes of all images in inputpath. [inputpath]
+* scale          Resizes images to the size in the inputpath. [size, inputpath]
+* filetype       Set the default export type (sets in environment variable). [filetype]
 
 Made for easy sprite sheet making in gamedev pipeline.  
 Created by Henrik Länsman.  
@@ -26,16 +30,11 @@ dotnet run --project .\SpriteSheeter.Cli\SpriteSheeter.Cli.csproj -- combinefold
 dotnet run --project .\SpriteSheeter.Cli\SpriteSheeter.Cli.csproj -- cfg c:\code\sprite-sheeter\examples\sample_config.cfg
 ```
 
-```
-SpriteSheetPacker.exe C:\temp\some_config_file[extension]
-```
-
 Example file:  
 ```
 combinefolder
 C:\temp\sprites\player
 C:\temp\sprites
-SimpleData
 ```
 
 # Available export formats  

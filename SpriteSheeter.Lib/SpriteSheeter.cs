@@ -73,20 +73,19 @@ namespace SpriteSheeter.Lib
         /// <summary>
         /// Split a sheet into frames of requestedSize x requestedSize
         /// </summary>
-        /// <param name="requestedSize"></param>
+        /// <param name="size"></param>
         /// <param name="inputpath"></param>
         /// <returns></returns>
-        public string SplitSheet(string requestedSize, string inputpath) {
-            short size;
-            if(!short.TryParse(requestedSize, out size)) {
-                return "requestedSize '{requestedSize}' is not a number (short)";
+        public string SplitSheet(string size, string inputpath) {
+            if (!short.TryParse(size, out short newSize)) {
+                return $"size '{size}' is not a number (short)";
             }
 
-            if(!System.IO.File.Exists(inputpath)) {
+            if (!System.IO.File.Exists(inputpath)) {
                 return $"file @ {inputpath} does not exist";
             }
 
-            var newPath = _spriteSheetPacker.SplitImage(inputpath, size);
+            var newPath = _spriteSheetPacker.SplitImage(inputpath, newSize);
             return $"Created new folder with images in {newPath}";
         }
 
@@ -103,20 +102,19 @@ namespace SpriteSheeter.Lib
         /// <summary>
         /// Resizes images to the requested size in the inputpath.
         /// </summary>
-        /// <param name="requestedSize"></param>
+        /// <param name="size"></param>
         /// <param name="inputpath"></param>
         /// <returns></returns>
-        public string ScaleImages(string requestedSize, string inputpath) {
-            int size;
-            if (!int.TryParse(requestedSize, out size)) {
-                return "requestedSize '{requestedSize}' is not a number (short)";
+        public string ScaleImages(string size, string inputpath) {
+            if (!int.TryParse(size, out int newSize)) {
+                return $"size '{size}' is not a number";
             }
 
             if (!System.IO.Directory.Exists(inputpath)) {
                 return $"dir @ {inputpath} does not exist";
             }
 
-            var newPath =_spriteSheetPacker.ResizeImages(inputpath, size);
+            var newPath =_spriteSheetPacker.ResizeImages(inputpath, newSize);
             return $"Created new images in: {newPath}";
         }
 
