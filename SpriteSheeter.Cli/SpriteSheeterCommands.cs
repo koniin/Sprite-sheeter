@@ -43,6 +43,10 @@ namespace SpriteSheeter.Cli {
             return _spriteSheeter.ScaleImages(args[0], args[1]);
         }
 
+        private string ReplaceColor(string[] args) {
+            return _spriteSheeter.ReplaceColor(args[0], args[1], args[2]);
+        }
+
         private string SetDefaultExportType(string[] args) {
             if (Enum.TryParse(args[0], out FileType fileType)) {
                 return _spriteSheeter.SetDefaultExportType(fileType);
@@ -57,6 +61,7 @@ namespace SpriteSheeter.Cli {
             register_command(CombineFromSubFolders, 1, "combinesub", "Combines all sprites from subfolders in folder into a spritesheet in folder [inputpath]");
             register_command(SplitSheet, 2, "split", "Split a sheet into frames of size x size [size, inputpath]");
             register_command(MakeBlackAndWhiteCopies, 1, "bw", "Creates black and white copes of all images in inputpath. [inputpath]");
+            register_command(ReplaceColor, 3, "rc", "Replaces the color with another for all images in inputpath. [inputpath]");
             register_command(ScaleImages, 2, "scale", "Resizes images to the size in the inputpath. [size, inputpath]");
             register_command(SetDefaultExportType, 1, "filetype", "Set the default export type (sets in environment variable). [filetype]");
         }

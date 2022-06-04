@@ -76,6 +76,20 @@ namespace SpriteSheeter.Lib.SpriteSheetPack {
             }
         }
 
+        public void ReplaceColor(string inputpath, Color from, Color to) {
+            var directoryInfo = new DirectoryInfo(inputpath);
+
+            var files = directoryInfo.EnumerateFiles().ToList();
+
+            foreach (var file in files) {
+                var filePath = Path.Combine(directoryInfo.FullName, file.Name);
+                var outFile = Path.Combine(directoryInfo.FullName, "t_" + file.Name);
+                ColorChanger.ChangeAllColorsEqualTo(filePath, outFile, from, to);
+                File.Delete(filePath);
+                File.Move(outFile, filePath);
+            }
+        }
+
         public string ResizeImages(string inputpath, int newSize) {
             var directoryInfo = new DirectoryInfo(inputpath);
             

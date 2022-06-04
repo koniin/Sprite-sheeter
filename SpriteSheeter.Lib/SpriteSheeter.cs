@@ -2,6 +2,7 @@ using SpriteSheeter.Lib.ImageManipulation;
 using SpriteSheeter.Lib.MappingFileFormats;
 using SpriteSheeter.Lib.SpriteSheetPack;
 using System;
+using System.Drawing;
 
 namespace SpriteSheeter.Lib
 {
@@ -97,6 +98,20 @@ namespace SpriteSheeter.Lib
         public string MakeBlackAndWhiteCopies(string inputpath) {
             _spriteSheetPacker.MakeBlackWhiteCopies(inputpath);
             return $"Made black and white copies in {inputpath}";
+        }
+
+        /// <summary>
+        /// Replaces all instances of one color for another of all images in inputpath.
+        /// </summary>
+        /// <param name="inputpath"></param>
+        /// <param name="from">color in hex e.g. #ffffff</param>
+        /// <param name="to">color in hex e.g. #000000</param>
+        /// <returns></returns>
+        public string ReplaceColor(string inputpath, string from, string to) {
+            Color f = ColorTranslator.FromHtml(from);
+            Color t = ColorTranslator.FromHtml(to);
+            _spriteSheetPacker.ReplaceColor(inputpath, f, t);
+            return $"Replaced colors for all images in {inputpath}";
         }
 
         /// <summary>
